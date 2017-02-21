@@ -35,7 +35,7 @@
 // Instantiate ADIS16364 class as iSensor with CS pin 10(Arduino Uno)
 //ADIS16364 iSensor(10);
 
-//Instatiate ADIS16364 class as iSensor with CS pin 11(Arduino Leonardo)
+//Instantiate ADIS16364 class as iSensor with CS pin 11(Arduino Leonardo)
 ADIS16364 iSensor(11);
 
 void setup (){

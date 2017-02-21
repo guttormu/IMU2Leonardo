@@ -84,7 +84,7 @@ void ADIS16364::burst_read(){
     upper = SPI.transfer(0x00);
     lower = SPI.transfer(0x00);
     mask = 0xFF >> (16 - bits[i]);
-    raw = ( ( upper & mask ) << 8 ) | ( lower );
+    raw = ( ( mask & upper ) << 8 ) | ( lower );
     sensor[i] = ( ( offset_bin[i] )?( raw ):( signed_double( bits[i], raw ) ) ) * scale[i] + add[i];
     delay_cycle();
   }
