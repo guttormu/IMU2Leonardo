@@ -35,8 +35,7 @@ unsigned int remoteport = 5100;
 
 // buffers for receiving and sending data
 char  ReplyBuffer[UDP_TX_PACKET_MAX_SIZE];       // a string for sending IMU data to master
-char buffer1[32];
-char *testout;
+char *DataOut;
 
 // An EthernetUDP instance to let us send and receive packets over UDP
 EthernetUDP Udp;
@@ -46,6 +45,7 @@ void setup() {
   while (!Serial) {
     ; //wait for serial port to connect
   }
+  iSensor.gyro_prec_null();
   // start the Ethernet and UDP:
   Ethernet.begin(mac, ip);
   Serial.println(Ethernet.localIP());
@@ -60,9 +60,9 @@ void loop(){
   Udp.beginPacket(remoteip, remoteport);
   for(int i = 0; i < 11; i++){
     //Scale measured value, and cast as long integer
-    testout = ltoa(iSensor.sensor[i]*1000L, buffer1, 10);
+    DataOut = ltoa(iSensor.sensor[i]*1000L, ReplyBuffer, 10);
     //Send sensor data to the recipient computer
-    Udp.write(testout);
+    Udp.write(DataOut);
     Udp.write(" ");
   }
   Udp.endPacket();
