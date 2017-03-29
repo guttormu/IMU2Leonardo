@@ -1,17 +1,3 @@
-/*
-  UDPSendReceiveString:
-  This sketch receives UDP message strings, prints them to the serial port
-  and sends an "acknowledge" string back to the sender
-
-  A Processing sketch is included at the end of file that can be used to send
-  and received messages for testing with a computer.
-
-  created 21 Aug 2010
-  by Michael Margolis
-
-  This code is in the public domain.
-*/
-
 #include "ADIS16364.h"    //library for reading data from IMU
 #include <SPI.h>         // needed for Arduino versions later than 0018
 #include <Ethernet2.h>
@@ -28,30 +14,25 @@ const byte interruptPin = 2;
 byte mac[] = {
   0x90, 0xA2, 0xDA, 0x10, 0xB8, 0xC4
 };
-IPAddress ip(192, 168, 1, 10);
+IPAddress ip(192, 168, 1, 77);
 unsigned int localPort = 5200;      // local port to listen on
 
-//Enter IPAddress and port of recipient part
-IPAddress remoteip (192, 168, 1, 1);
-unsigned int remoteport = 5100;
-
+//Enter IP Address and port of recipient part
+IPAddress remoteip (192, 168, 1, 33);
+unsigned int remoteport = 5130;
 
 // buffers for receiving and sending data
 char  ReplyBuffer[UDP_TX_PACKET_MAX_SIZE];       // a string for sending IMU data to master
-char buffer1[32];
-char *testout;
+char *DataOut;
 
 // An EthernetUDP instance to let us send and receive packets over UDP
 EthernetUDP Udp;
 
 void setup() {
-  Serial.begin(9600);
-  while (!Serial) {
-    ; //wait for serial port to connect
-  }
+  //Gyroscope Precision Automatic Bias Null Calibration
+  iSensor.gyro_prec_null();
   // start the Ethernet and UDP:
   Ethernet.begin(mac, ip);
-  Serial.println(Ethernet.localIP());
   Udp.begin(localPort);
   pinMode(interruptPin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(interruptPin), sendpacket, LOW);
@@ -59,8 +40,7 @@ void setup() {
 }
 
 void loop(){
-  Serial.println("Running script");
-  delay(5000);
+  //Main loop
 }
 
 void sendpacket(){
@@ -69,11 +49,11 @@ void sendpacket(){
   Udp.beginPacket(remoteip, remoteport);
   for(int i = 0; i < 11; i++){
     //Scale measured value, and cast as long integer
-    testout = ltoa(iSensor.sensor[i]*1000L, buffer1, 10);
+    DataOut = ltoa(iSensor.sensor[i]*1000L, ReplyBuffer, 10);
     //Send sensor data to the recipient computer
-    Udp.write(testout);
+    Udp.write(DataOut);
+    Udp.write(" ");
   }
   Udp.endPacket();
-  Serial.println(iSensor.sensor[0]);
 }
 

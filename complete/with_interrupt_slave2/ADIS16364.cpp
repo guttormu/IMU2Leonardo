@@ -71,7 +71,7 @@ void ADIS16364::burst_read(){
   unsigned char upper,lower,mask;
   unsigned int raw;
   double scale[11] = {2.418e-3, 0.05, 0.05, 0.05, 1, 1, 1, 0.136, 0.136, 0.136, 805.8e-6};
-  double add[11] = {0, 0, 0, 0, 0, 0, 0, 25, 25, 25, 0};
+  double add[11] = {0, 0, 0, 0, 0, 0, 0, 25, 25, 25, -1.65};
   
   
   digitalWrite(CS, LOW);
