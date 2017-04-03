@@ -1,0 +1,45 @@
+﻿  test.cpp
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\test.cpp(4): fatal error C1083: Cannot open include file: 'netdb.h': No such file or directory
+  receive.cpp
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(3): error C2011: 'sockaddr_in': 'struct' type redefinition
+  c:\program files (x86)\windows kits\8.1\include\um\winsock2.h(4244): note: see declaration of 'sockaddr_in'
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(6): error C2079: 'si_me' uses undefined struct 'sockaddr_in'
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(6): error C2079: 'si_other' uses undefined struct 'sockaddr_in'
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(8): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(13): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(13): error C2365: 'setsockopt': redefinition; previous definition was 'function'
+  c:\program files (x86)\windows kits\8.1\include\um\winsock2.h(2146): note: see declaration of 'setsockopt'
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(15): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(15): error C2365: 'memset': redefinition; previous definition was 'function'
+  c:\program files (x86)\microsoft visual studio 14.0\vc\include\vcruntime_string.h(60): note: see declaration of 'memset'
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(16): error C3927: '->': trailing return type is not allowed after a non-function declarator
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(16): error C3484: syntax error: expected '->' before the return type
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(16): error C3613: missing return type after '->' ('int' assumed)
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(16): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(16): error C2086: 'int si_me': redefinition
+  c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(6): note: see declaration of 'si_me'
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(16): error C2146: syntax error: missing ';' before identifier 'sin_family'
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(17): error C3927: '->': trailing return type is not allowed after a non-function declarator
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(17): error C3484: syntax error: expected '->' before the return type
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(17): error C3613: missing return type after '->' ('int' assumed)
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(17): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(17): error C2086: 'int si_me': redefinition
+  c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(6): note: see declaration of 'si_me'
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(17): error C2146: syntax error: missing ';' before identifier 'sin_port'
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(18): error C3927: '->': trailing return type is not allowed after a non-function declarator
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(18): error C3484: syntax error: expected '->' before the return type
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(18): error C3613: missing return type after '->' ('int' assumed)
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(18): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(18): error C2086: 'int si_me': redefinition
+  c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(6): note: see declaration of 'si_me'
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(18): error C2146: syntax error: missing ';' before identifier 'sin_addr'
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(20): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(20): error C2374: 'assert': redefinition; multiple initialization
+  c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(8): note: see declaration of 'assert'
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(22): error C2059: syntax error: 'while'
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(23): error C2143: syntax error: missing ';' before '{'
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\receive.cpp(23): error C2447: '{': missing function header (old-style formal list?)
+  basic.cpp
+c:\users\guttorm\onedrive – ntnu\arduino-imu\udp for c++\project2\project2\basic.cpp(69): error C4996: 'inet_ntoa': Use inet_ntop() or InetNtop() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+  c:\program files (x86)\windows kits\8.1\include\um\winsock2.h(1868): note: see declaration of 'inet_ntoa'
+  Generating Code...
