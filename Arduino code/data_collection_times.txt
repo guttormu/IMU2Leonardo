@@ -1,0 +1,7 @@
+2278 samples på 100 sekund -> frekvens på 22,78 Hz. 
+
+Venter 20 ms mellom hver måling -> 20ms*23 samples = 460 ms venting. 
+
+1000ms-460ms = 540 ms total tid til databehandling. 540ms/23samples = 23,5 ms for innsamling og sending av sensordata. 
+
+UTEN KALMAN, men venting på 26 ms gir 2950 samples på 100s. 

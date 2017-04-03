@@ -1,0 +1,99 @@
+Time before and after: 
+31201980
+31209528
+Time before and after: 
+33810272
+33817660
+Time before and after: 
+36418404
+36425772
+Time before and after: 
+39026520
+39033912
+Time before and after: 
+41634660
+41642056
+Time before and after: 
+44242804
+44250192
+Time before and after: 
+46850940
+46858328
+Time before and after: 
+49459064
+49466460
+Time before and after: 
+52067204
+52074604
+Time before and after: 
+54675340
+54682748
+Time before and after: 
+57283496
+57290884
+Time before and after: 
+59891636
+59899004
+Time before and after: 
+62499752
+62507132
+Time before and after: 
+65107876
+65115264
+Time before and after: 
+67716012
+67723372
+Time before and after: 
+70324116
+70331520
+Time before and after: 
+72932272
+72939556
+Time before and after: 
+75540308
+75547696
+Time before and after: 
+78148440
+78155836
+Time before and after: 
+80756584
+80763864
+Time before and after: 
+83364616
+83372288
+Time before and after: 
+85973036
+85980408
+Time before and after: 
+88581160
+88588520
+Time before and after: 
+91189268
+91196588
+Time before and after: 
+93797340
+93804716
+Time before and after: 
+96405468
+96412752
+Time before and after: 
+99013500
+99020812
+Time before and after: 
+101621560
+101628956
+Time before and after: 
+104229772
+104237172
+Time before and after: 
+106837996
+106845328
+Time before and after: 
+109446156
+109453536
+Time before and after: 
+112054368
+112061748
+Time before and after: 
+114662580
+114669976

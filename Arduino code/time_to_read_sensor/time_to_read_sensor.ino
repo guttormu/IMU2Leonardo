@@ -10,6 +10,8 @@ ADIS16364 iSensor(9);
 //Set interrupt pin for output
 int interruptPin = 2;
 
+unsigned long time1, time2;
+
 // Enter a MAC address and IP address for your controller below.
 byte mac[] = {
   0x90, 0xA2, 0xDA, 0x10, 0xB8, 0xB4
@@ -38,9 +40,11 @@ void setup() {
   pinMode(interruptPin, OUTPUT);
   digitalWrite(interruptPin, HIGH);
   delay(200);
+  Serial.begin(9600);
 }
 
 void loop(){
+  time1 = micros();
   digitalWrite(interruptPin, LOW);
   SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE3));
   iSensor.burst_read();
@@ -54,5 +58,9 @@ void loop(){
     Udp.write(" ");
   }
   Udp.endPacket();
-  delay(25);
+  time2 = micros();
+  Serial.println("Time before and after: ");
+  Serial.println(time1);
+  Serial.println(time2);
+  delay(2600);
 }
