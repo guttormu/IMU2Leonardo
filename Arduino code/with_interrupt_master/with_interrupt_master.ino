@@ -21,6 +21,8 @@ unsigned int localPort = 5200;      // local port to listen on
 IPAddress remoteip (192, 168, 1, 33);
 unsigned int remoteport = 5100;
 
+//Time integer for frequency control
+unsigned long timer;
 
 // buffers for receiving and sending data
 char  ReplyBuffer[UDP_TX_PACKET_MAX_SIZE];       // a string for sending IMU data to master
@@ -41,18 +43,23 @@ void setup() {
 }
 
 void loop(){
-  digitalWrite(interruptPin, LOW);
-  SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE3));
-  iSensor.burst_read();
-  digitalWrite(interruptPin, HIGH);
-  Udp.beginPacket(remoteip, remoteport);
-  for(int i = 0; i < 11; i++){
-    //Scale measured value, and cast as long integer
-    DataOut = ltoa(iSensor.sensor[i]*1000L, ReplyBuffer, 10);
-    //Send sensor data to the recipient computer
-    Udp.write(DataOut);
-    Udp.write(" ");
+  timer = millis();
+  //Execute with 20Hz frequency, i.e. every 50 milliseconds. 1 sampling takes approx. 8 milliseconds.
+  if(timer % 50 == 0){
+    digitalWrite(interruptPin, LOW);
+    SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE3));
+    iSensor.burst_read();
+    digitalWrite(interruptPin, HIGH);
+    Udp.beginPacket(remoteip, remoteport);
+    for(int i = 0; i < 11; i++){
+      //Scale measured value, and cast as long integer
+      DataOut = ltoa(iSensor.sensor[i]*1000L, ReplyBuffer, 10);
+      //Send sensor data to the recipient computer
+      Udp.write(DataOut);
+      Udp.write(" ");
+    }
+    Udp.endPacket();
+    delay(25);      //Delay milliseconds
+  }else{
   }
-  Udp.endPacket();
-  delay(25);
 }
