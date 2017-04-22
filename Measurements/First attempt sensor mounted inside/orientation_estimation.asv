@@ -74,5 +74,4 @@ S2 = Smtrx(l2);
 S3 = Smtrx(l3);
 S4 = Smtrx(l4); 
 
-G = [eye(3), -S1, H1; eye(3), -S2, H2; eye(3), -S3, H3; eye(3), -S4, H4];
-
+G = [eye(3), 
