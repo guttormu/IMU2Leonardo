@@ -7,6 +7,8 @@ temp = load('IMU3_raw.mat');
 imu3_raw = temp.ans;
 temp = load('IMU4_raw.mat');
 imu4_raw = temp.ans;
+temp = load('oqus_measured.mat');
+oqus = temp.ans;
 
 %Orientation vector, roll in 1st row, pitch in 2nd row, yaw in 3rd row
 orientation = [];
@@ -64,14 +66,47 @@ l2 = [10, 20, 30];
 l3 = [-50, 200, 1];
 l4 = [80, 93, 54];
 
-H1 = Hmatrix(l1);
-H2 = Hmatrix(l2);
-H3 = Hmatrix(l3); 
-H4 = Hmatrix(l4);
+% H1 = Hmatrix(l1);
+% H2 = Hmatrix(l2);
+% H3 = Hmatrix(l3); 
+% H4 = Hmatrix(l4);
+% 
+% S1 = Smtrx(l1);
+% S2 = Smtrx(l2);
+% S3 = Smtrx(l3);
+% S4 = Smtrx(l4); 
+% 
+% G = [eye(3), -S1, H1; eye(3), -S2, H2; eye(3), -S3, H3; eye(3), -S4, H4];
 
-S1 = Smtrx(l1);
-S2 = Smtrx(l2);
-S3 = Smtrx(l3);
-S4 = Smtrx(l4); 
+%Estimation of angular rate, modeling a LTI system in Kalman Filter
 
-G = [eye(3), 
+omega = [];
+
+for i = 1:5:(length(oqus)-rem(length(oqus,5)))
+    omega(i) = mean(oqus(5,i:i+4)/0.01;
+end
+figure()
+plot(omega)
+
+
+A = eye(6);
+A(1:3,4:6) = eye(3)*0.01;
+C = [eye(3), zeros(3,3)];
+
+x = [0; 0; 0; 0; 0; 0];
+P = eye(6);
+
+Q = blkdiag(zeros(3,3), 10^-5*eye(3));
+R = 0.005*eye(3);
+
+omega_hat = [];
+
+for i = 1:length(oqus)
+    x = A*x;
+    P = A*P*A'+Q;
+    K = P*C'*inv(C*P*C'+R);
+    x = x + K*(oqus(5:7,i)-C*x);
+    P = (eye(6)-K*C)*P;
+    omega_hat(:,i) = x;
+end
+
