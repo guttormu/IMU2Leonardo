@@ -148,3 +148,31 @@ for i = 3:2:length(oqus)-1
 end
 figure()
 plot(v(1,:))
+
+
+%Translating all accelerations to CO
+%State vector x = [p, v, g, b, w, b]' according to Kjerstad
+
+%Initial states
+p0 = Smtrx(omega_hat(1:3,100))*oqus(2:4,1);
+x = [po, zeros(1,15)]';
+P = eye(18);
+
+%Selection matrices
+B1 = [eye(3), zeros(3,9)];
+B2 = [zeros(3,3), eye(3), zeros(3,6)];
+
+j = 1;          %Counter for oqus measurements
+for i = 1:length(imu1_raw)
+    a_m = [imu1_raw(5:7,i); imu2_raw(5:7,i); imu3_raw(5:7,i); imu4_raw(5:7,i)];
+    while imu1_raw(1,i) ~= oqus(1,j)
+        j = j+1;
+    end
+    %System matrix
+    A = [-Smtrx(omega_hat(4:6,j)), eye(3), zeros(3,12);...
+        zeros(3,3), -Smtrx(omega_hat(4:6,j)), -eye(3), -eye(3), zeros(3,6);...
+        zeros(3,6), -Smtrx(omega_hat(4:6,j)), zeros(3,9);...
+        zeros(3,18); zeros(3,15), eye(3); zeros(3,18)];
+    %Gain matrix
+    B = [zeros(3,12); B1; zeros(6,12); B2; zeros(3,12)]*inv(G);
+end
