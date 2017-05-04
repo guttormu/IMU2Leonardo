@@ -10,6 +10,9 @@ imu4_raw = temp.ans;
 temp = load('oqus_measured.mat');
 oqus = temp.ans;
 
+%Translating all oqus angles from degrees to radians
+oqus(5:7,:) = deg2rad(oqus(5:7,:));
+
 %Orientation vector, roll in 1st row, pitch in 2nd row, yaw in 3rd row
 orientation = [];
 
@@ -59,25 +62,6 @@ for i = 1:4
     eval(sprintf('subplot(3,2,6); plot(a(3,:)); hold on; plot(imu%i_raw(7,1:1000));',i))
 end
 
-%Measured position of each IMU relative center of gravity defined in Quali
-
-l1 = [100, 200, 1];
-l2 = [10, 20, 30];
-l3 = [-50, 200, 1];
-l4 = [80, 93, 54];
-
-% H1 = Hmatrix(l1);
-% H2 = Hmatrix(l2);
-% H3 = Hmatrix(l3); 
-% H4 = Hmatrix(l4);
-% 
-% S1 = Smtrx(l1);
-% S2 = Smtrx(l2);
-% S3 = Smtrx(l3);
-% S4 = Smtrx(l4); 
-% 
-% G = [eye(3), -S1, H1; eye(3), -S2, H2; eye(3), -S3, H3; eye(3), -S4, H4];
-
 %Estimation of angular rate, modeling a LTI system in Kalman Filter
 
 omega = [];
@@ -111,7 +95,7 @@ for i = 1:length(oqus)
     %Prediction
     x = A*x; %x_(k,k-1)=A*x_(k-1,k-1)
     P_prev = P; %P_(k-1,k-1)
-    P = lambda*A*P*A'+Q; %P_(k,k-1)=A*P_(k-1,k-1)*..
+    P = 1.2*A*P*A'+Q; %P_(k,k-1)=A*P_(k-1,k-1)*..
     
     %Optimal forgetting factor
     M = C*A*P_prev*A'*C';
@@ -149,30 +133,84 @@ end
 figure()
 plot(v(1,:))
 
-
 %Translating all accelerations to CO
-%State vector x = [p, v, g, b, w, b]' according to Kjerstad
+%State vector x = [p, v, g, b_l, w, b_w]' according to Kjerstad
+
+%Measured position of each IMU relative center of gravity defined in Quali
+
+l1 = [-465, -184, -80];
+l2 = [-244, 184, -140];
+l3 = [740, 130, -235];
+l4 = [450, -160, -235];
+
+H1 = Hmatrix(l1);
+H2 = Hmatrix(l2);
+H3 = Hmatrix(l3); 
+H4 = Hmatrix(l4);
+
+S1 = Smtrx(l1);
+S2 = Smtrx(l2);
+S3 = Smtrx(l3);
+S4 = Smtrx(l4); 
+
+G = [eye(3), -S1, H1; eye(3), -S2, H2; eye(3), -S3, H3; eye(3), -S4, H4];
 
 %Initial states
 p0 = Smtrx(omega_hat(1:3,100))*oqus(2:4,1);
-x = [po, zeros(1,15)]';
+x = [p0', zeros(1,15)]';
 P = eye(18);
 
 %Selection matrices
 B1 = [eye(3), zeros(3,9)];
 B2 = [zeros(3,3), eye(3), zeros(3,6)];
 
+C = [eye(3), zeros(3,15); zeros(3,12), eye(3), zeros(3,3)];
+D = zeros(6,12);
+
+%Covariance matrices for Kalman Filter
+Q = 0*eye(18);
+R = 10^-2*eye(6);
+
+%Acceleration output
+accel_hat = [];
+z = [];
+
 j = 1;          %Counter for oqus measurements
 for i = 1:length(imu1_raw)
     a_m = [imu1_raw(5:7,i); imu2_raw(5:7,i); imu3_raw(5:7,i); imu4_raw(5:7,i)];
-    while imu1_raw(1,i) ~= oqus(1,j)
+    while imu1_raw(1,i) ~= oqus(1,j) %Finding corresponding oqus measurement
         j = j+1;
     end
+    
     %System matrix
     A = [-Smtrx(omega_hat(4:6,j)), eye(3), zeros(3,12);...
         zeros(3,3), -Smtrx(omega_hat(4:6,j)), -eye(3), -eye(3), zeros(3,6);...
         zeros(3,6), -Smtrx(omega_hat(4:6,j)), zeros(3,9);...
         zeros(3,18); zeros(3,15), eye(3); zeros(3,18)];
     %Gain matrix
-    B = [zeros(3,12); B1; zeros(6,12); B2; zeros(3,12)]*inv(G);
+    BG = [zeros(3,12); B1; zeros(6,12); B2; zeros(3,12)]*inv(G);
+    
+    z(:,i) = inv(G)*a_m;
+    
+    %Discretization manually
+    disc = 0.05.*[A, BG; zeros(12,30)];
+    disc_exp = expm(disc);
+    A_disc = disc_exp(1:18,1:18);
+    B_disc = disc_exp(1:18, 19:30);
+    
+    sysc = ss(A, BG, C, D, 0.05);
+    %sysd = c2d(sysc, 0.05);
+    
+    K = P*C'*inv(C*P*C'+R);
+    y = [Rzyx(omega_hat(1,j),omega_hat(2,j),omega_hat(3,j))*oqus(2:4,j);omega_hat(4:6,j)];
+    x = x+K*(y - C*x);
+    accel_hat(:,i) = x;
+    P = (eye(18)-K*C)*P*(eye(18)-K*C)'+K*R*K';
+    %Predicting next state
+    x = A_disc*x+B_disc*a_m;
+    P = A_disc*P*A_disc'+Q;
 end
+
+%Plotting results
+%figure()
+%subplot(3,1,1); plot(
